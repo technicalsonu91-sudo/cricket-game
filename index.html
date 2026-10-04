@@ -1,176 +1,1000 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plyvoro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plyvoro Admin Panel</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    body {
-      background: #08111f;
-      color: white;
-      min-height: 100vh;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
 
-    header {
-      padding: 18px 20px;
-      background: #0d1b2d;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #24364d;
-    }
+body{
+  background:#07111f;
+  color:#fff;
+  min-height:100vh;
+}
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+button,input{
+  font:inherit;
+}
 
-    .login-btn {
-      background: #1677ff;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+button{
+  cursor:pointer;
+}
 
-    .hero {
-      padding: 35px 20px;
-      text-align: center;
-    }
+/* LOGIN */
 
-    .hero h1 {
-      font-size: 34px;
-      margin-bottom: 10px;
-    }
+.login-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
 
-    .hero p {
-      color: #aebbc9;
-      font-size: 15px;
-    }
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:#101d2d;
+  border:1px solid #263b55;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
 
-    .wallet {
-      margin: 0 20px 30px;
-      padding: 20px;
-      background: #10263a;
-      border-radius: 14px;
-      text-align: center;
-      border: 1px solid #29445f;
-    }
+.logo{
+  text-align:center;
+  font-size:32px;
+  font-weight:800;
+  color:#39d98a;
+  margin-bottom:8px;
+}
 
-    .wallet-title {
-      color: #aebbc9;
-      font-size: 14px;
-    }
+.login-title{
+  text-align:center;
+  font-size:22px;
+  margin-bottom:6px;
+}
 
-    .coins {
-      font-size: 28px;
-      font-weight: bold;
-      margin-top: 6px;
-    }
+.login-subtitle{
+  text-align:center;
+  color:#91a4b8;
+  font-size:14px;
+  margin-bottom:25px;
+}
 
-    .games {
-      padding: 10px 20px 40px;
-      max-width: 700px;
-      margin: auto;
-    }
+.field{
+  margin-bottom:16px;
+}
 
-    .games h2 {
-      margin-bottom: 18px;
-      font-size: 22px;
-    }
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:#b9c8d8;
+  font-size:14px;
+}
 
-    .game-card {
-      background: #101f33;
-      border: 1px solid #263b55;
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 16px;
-    }
+.field input{
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid #334b68;
+  background:#091523;
+  color:white;
+  outline:none;
+}
 
-    .game-icon {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
+.field input:focus{
+  border-color:#39d98a;
+}
 
-    .game-card h3 {
-      font-size: 21px;
-      margin-bottom: 8px;
-    }
+.primary-btn{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:10px;
+  background:#39d98a;
+  color:#06120c;
+  font-weight:800;
+}
 
-    .game-card p {
-      color: #aebbc9;
-      font-size: 14px;
-      margin-bottom: 18px;
-    }
+.message{
+  margin-top:15px;
+  padding:11px;
+  border-radius:9px;
+  display:none;
+  font-size:14px;
+}
 
-    .play-btn {
-      width: 100%;
-      border: none;
-      background: #1677ff;
-      color: white;
-      padding: 13px;
-      border-radius: 9px;
-      font-size: 16px;
-      font-weight: bold;
-    }
+/* ADMIN */
 
-    footer {
-      text-align: center;
-      color: #718096;
-      padding: 25px;
-      font-size: 13px;
-    }
-  </style>
+.admin-page{
+  display:none;
+  min-height:100vh;
+}
+
+.header{
+  height:65px;
+  padding:0 18px;
+  background:#0d1a2b;
+  border-bottom:1px solid #263b55;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header-logo{
+  font-size:23px;
+  font-weight:800;
+  color:#39d98a;
+}
+
+.logout-btn{
+  background:#17283c;
+  border:1px solid #334b68;
+  color:white;
+  padding:9px 14px;
+  border-radius:8px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 18px;
+}
+
+.welcome{
+  margin-bottom:22px;
+}
+
+.welcome h1{
+  font-size:28px;
+  margin-bottom:6px;
+}
+
+.welcome p{
+  color:#91a4b8;
+}
+
+/* CARDS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.stat-card{
+  background:#101d2d;
+  border:1px solid #263b55;
+  border-radius:14px;
+  padding:20px;
+}
+
+.stat-title{
+  color:#91a4b8;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.stat-value{
+  font-size:27px;
+  font-weight:800;
+}
+
+/* MENU */
+
+.menu{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.menu-card{
+  background:#101d2d;
+  border:1px solid #263b55;
+  border-radius:14px;
+  padding:20px;
+}
+
+.menu-card h3{
+  margin-bottom:8px;
+}
+
+.menu-card p{
+  color:#91a4b8;
+  font-size:14px;
+  margin-bottom:15px;
+}
+
+.menu-btn{
+  background:#17283c;
+  border:1px solid #334b68;
+  color:white;
+  padding:10px 14px;
+  border-radius:8px;
+}
+
+/* CUSTOMER */
+
+.customer-panel{
+  background:#101d2d;
+  border:1px solid #263b55;
+  border-radius:16px;
+  padding:22px;
+}
+
+.customer-panel h2{
+  margin-bottom:6px;
+}
+
+.customer-panel .description{
+  color:#91a4b8;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.create-btn{
+  width:100%;
+  padding:13px;
+  background:#39d98a;
+  color:#06120c;
+  border:0;
+  border-radius:10px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:700px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .menu{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .welcome h1{
+    font-size:24px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header>
+<!-- LOGIN PAGE -->
+
+<div id="loginPage" class="login-page">
+
+  <div class="login-box">
+
     <div class="logo">Plyvoro</div>
-    <button class="login-btn">Login</button>
-  </header>
 
-  <section class="hero">
-    <h1>Welcome to Plyvoro</h1>
-    <p>Play games using virtual coins.</p>
-  </section>
+    <div class="login-title">
+      Admin Panel
+    </div>
 
-  <div class="wallet">
-    <div class="wallet-title">Virtual Coin Balance</div>
-    <div class="coins">🪙 10,000 Coins</div>
+    <div class="login-subtitle">
+      Sign in to manage Plyvoro
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input
+        type="email"
+        id="loginEmail"
+        placeholder="Admin email"
+      >
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password"
+      >
+    </div>
+
+    <button
+      class="primary-btn"
+      onclick="loginAdmin()"
+    >
+      Login
+    </button>
+
+    <div id="loginMessage" class="message"></div>
+
   </div>
 
-  <section class="games">
-    <h2>🎮 Games</h2>
+</div>
 
-    <div class="game-card">
-      <div class="game-icon">🏏</div>
-      <h3>Cricket Prediction</h3>
-      <p>Make predictions about cricket matches using virtual coins.</p>
-      <button class="play-btn">Play Now</button>
+
+<!-- ADMIN PAGE -->
+
+<div id="adminPage" class="admin-page">
+
+  <header class="header">
+
+    <div class="header-logo">
+      Plyvoro Admin
     </div>
 
-    <div class="game-card">
-      <div class="game-icon">🚀</div>
-      <h3>Crash</h3>
-      <p>Play the virtual crash game using virtual coins.</p>
-      <button class="play-btn">Play Now</button>
+    <button
+      class="logout-btn"
+      onclick="logoutAdmin()"
+    >
+      Logout
+    </button>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="welcome">
+      <h1>Dashboard</h1>
+      <p>Manage your Plyvoro virtual gaming platform.</p>
     </div>
 
-  </section>
 
-  <footer>
-    © 2026 Plyvoro • Virtual Coins Only
-  </footer>
+    <div class="stats">
+
+      <div class="stat-card">
+        <div class="stat-title">
+          Platform
+        </div>
+        <div class="stat-value">
+          Plyvoro
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-title">
+          Game System
+        </div>
+        <div class="stat-value">
+          Virtual Coins
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-title">
+          Admin Status
+        </div>
+        <div class="stat-value">
+          Active
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="menu">
+
+      <div class="menu-card">
+        <h3>👤 Customers</h3>
+
+        <p>
+          Create and manage Plyvoro customer accounts.
+        </p>
+
+        <button
+          class="menu-btn"
+          onclick="showCustomerPanel()"
+        >
+          Create Customer
+        </button>
+      </div>
+
+
+      <div class="menu-card">
+
+        <h3>💰 Virtual Coins</h3>
+
+        <p>
+          Manage customer virtual coin balances.
+        </p>
+
+        <button
+          class="menu-btn"
+          onclick="alert('Coin management will be enabled next.')"
+        >
+          Manage Coins
+        </button>
+
+      </div>
+
+
+      <div class="menu-card">
+
+        <h3>🏏 Cricket Prediction</h3>
+
+        <p>
+          Manage cricket matches and predictions.
+        </p>
+
+        <button
+          class="menu-btn"
+          onclick="alert('Cricket management will be enabled next.')"
+        >
+          Manage Cricket
+        </button>
+
+      </div>
+
+
+      <div class="menu-card">
+
+        <h3>🚀 Crash</h3>
+
+        <p>
+          Manage Crash game rounds.
+        </p>
+
+        <button
+          class="menu-btn"
+          onclick="alert('Crash management will be enabled next.')"
+        >
+          Manage Crash
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- CREATE CUSTOMER -->
+
+    <div
+      id="customerPanel"
+      class="customer-panel"
+      style="display:none;"
+    >
+
+      <h2>Create Customer Account</h2>
+
+      <p class="description">
+        Create a new Plyvoro customer account with virtual coins.
+      </p>
+
+
+      <div class="form-grid">
+
+        <div class="field">
+
+          <label>
+            Customer Name
+          </label>
+
+          <input
+            type="text"
+            id="customerName"
+            placeholder="Customer name"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Customer Email
+          </label>
+
+          <input
+            type="email"
+            id="customerEmail"
+            placeholder="customer@example.com"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="customerPassword"
+            placeholder="Minimum 6 characters"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Starting Coins
+          </label>
+
+          <input
+            type="number"
+            id="startingCoins"
+            value="10000"
+            min="0"
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="create-btn"
+        onclick="createCustomer()"
+      >
+        Create Customer
+      </button>
+
+
+      <div
+        id="customerMessage"
+        class="message"
+      ></div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<script>
+
+/* ================================
+   SUPABASE CONFIGURATION
+================================ */
+
+/*
+  IMPORTANT:
+  यहां केवल Supabase URL और
+  Publishable/Anon key डालें।
+
+  Service Role Key कभी भी यहां
+  नहीं डालना है.
+*/
+
+const SUPABASE_URL =
+  "YOUR_SUPABASE_PROJECT_URL";
+
+const SUPABASE_ANON_KEY =
+  "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* ================================
+   LOGIN
+================================ */
+
+async function loginAdmin(){
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+
+  if(!email || !password){
+
+    showMessage(
+      message,
+      "Email और password डालिए.",
+      false
+    );
+
+    return;
+  }
+
+
+  message.style.display = "block";
+  message.style.background = "#17283c";
+  message.style.color = "#fff";
+  message.innerText = "Logging in...";
+
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+
+  if(error){
+
+    showMessage(
+      message,
+      error.message,
+      false
+    );
+
+    return;
+  }
+
+
+  if(data.user){
+
+    await checkAdmin();
+
+  }
+
+}
+
+
+/* ================================
+   CHECK ADMIN
+================================ */
+
+async function checkAdmin(){
+
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+
+
+  if(!user){
+
+    showLogin();
+
+    return;
+
+  }
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("profiles")
+      .select("role,account_status")
+      .eq("id", user.id)
+      .single();
+
+
+  if(error || !data){
+
+    await supabaseClient.auth.signOut();
+
+    showLogin();
+
+    showMessage(
+      document.getElementById("loginMessage"),
+      "Profile नहीं मिला.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(
+    data.role !== "admin" ||
+    data.account_status === "disabled"
+  ){
+
+    await supabaseClient.auth.signOut();
+
+    showLogin();
+
+    showMessage(
+      document.getElementById("loginMessage"),
+      "Admin access नहीं है.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  showAdmin();
+
+}
+
+
+/* ================================
+   SHOW / HIDE
+================================ */
+
+function showLogin(){
+
+  document.getElementById("loginPage")
+    .style.display = "flex";
+
+  document.getElementById("adminPage")
+    .style.display = "none";
+
+}
+
+
+function showAdmin(){
+
+  document.getElementById("loginPage")
+    .style.display = "none";
+
+  document.getElementById("adminPage")
+    .style.display = "block";
+
+}
+
+
+function showCustomerPanel(){
+
+  const panel =
+    document.getElementById("customerPanel");
+
+  panel.style.display =
+    panel.style.display === "none"
+      ? "block"
+      : "none";
+
+}
+
+
+/* ================================
+   CREATE CUSTOMER
+================================ */
+
+async function createCustomer(){
+
+  const name =
+    document.getElementById("customerName")
+      .value.trim();
+
+  const email =
+    document.getElementById("customerEmail")
+      .value.trim();
+
+  const password =
+    document.getElementById("customerPassword")
+      .value;
+
+  const coins =
+    Number(
+      document.getElementById("startingCoins").value
+    );
+
+
+  const message =
+    document.getElementById("customerMessage");
+
+
+  if(!name){
+
+    showMessage(
+      message,
+      "Customer name डालिए.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(!email){
+
+    showMessage(
+      message,
+      "Customer email डालिए.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(password.length < 6){
+
+    showMessage(
+      message,
+      "Password कम से कम 6 characters का होना चाहिए.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if(!Number.isInteger(coins) || coins < 0){
+
+    showMessage(
+      message,
+      "Starting coins सही डालिए.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  showMessage(
+    message,
+    "Customer create हो रहा है...",
+    true
+  );
+
+
+  try{
+
+    const {
+      data: { session }
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if(!session){
+
+      showMessage(
+        message,
+        "Admin session expired. फिर से login करें.",
+        false
+      );
+
+      return;
+
+    }
+
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/functions/v1/create-customer",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":"application/json",
+            "Authorization":
+              "Bearer " + session.access_token
+          },
+
+          body:JSON.stringify({
+            name:name,
+            email:email,
+            password:password,
+            starting_coins:coins
+          })
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        result.error ||
+        result.message ||
+        "Customer creation failed."
+      );
+
+    }
+
+
+    showMessage(
+      message,
+      "✅ Customer successfully create हो गया!",
+      true
+    );
+
+
+    document.getElementById("customerName")
+      .value = "";
+
+    document.getElementById("customerEmail")
+      .value = "";
+
+    document.getElementById("customerPassword")
+      .value = "";
+
+    document.getElementById("startingCoins")
+      .value = "10000";
+
+
+  }catch(error){
+
+    showMessage(
+      message,
+      "❌ " + error.message,
+      false
+    );
+
+  }
+
+}
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+async function logoutAdmin(){
+
+  await supabaseClient.auth.signOut();
+
+  showLogin();
+
+}
+
+
+/* ================================
+   MESSAGE
+================================ */
+
+function showMessage(
+  element,
+  text,
+  success
+){
+
+  element.style.display = "block";
+
+  if(success){
+
+    element.style.background = "#123c2b";
+    element.style.color = "#52e39d";
+
+  }else{
+
+    element.style.background = "#3d1720";
+    element.style.color = "#ff8295";
+
+  }
+
+  element.innerText = text;
+
+}
+
+
+/* ================================
+   AUTO LOGIN CHECK
+================================ */
+
+checkAdmin();
+
+</script>
 
 </body>
-</html>
+  </html>
